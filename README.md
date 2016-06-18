@@ -23,15 +23,15 @@ Call this task to install nginx on your system.
 * worker_connections, How many worker connections - Default: 1024
 * mime_type_file - Default: /etc/nginx/mime.types
 * default_type, Default mimetype to deliver - Default: application/octet-stream
-* log_format_main - Default: $remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for"
+* log_format_main - Default: `$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for"`
 * access_log - Default: /var/log/nginx/access.log
 * sendfile - Default: on
 * keepalive_timeout - Default: 65
 * gzip - Default: on
-* http_options, an array to add additional http options - Default: []
-* http_include_files, Include configuration files - Default: ["/etc/nginx/conf.d/*.conf"]
-* events_options, Additional options for the events section. - Default: []
-* main_options, Additional options for the main section. - Default: []
+* http_options, an array to add additional http options - Default: `[]`
+* http_include_files, Include configuration files - Default: `["/etc/nginx/conf.d/*.conf"]`
+* events_options, Additional options for the events section. - Default: `[]`
+* main_options, Additional options for the main section. - Default: `[]`
 
 #### Example
 
