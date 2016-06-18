@@ -75,7 +75,7 @@ Create a virtual host.
 
 * ensure - Default: present
 * configuration_dir, Directory where to store the configuration file for this vhost - Default: /etc/nginx/conf.d
-* on_change, Hook to execute when this vhost changed - Default: sub { service nginx => "reload"; }
+* on_change, Hook to execute when this vhost changed - Default: `sub { service nginx => "reload"; }`
 * listen, Which ip:port to listen on - Default: 80
 * server_name, Virtualhost name - Default: localhost
 * access_log - Default: /var/log/nginx/log/$resource_name.access.log
