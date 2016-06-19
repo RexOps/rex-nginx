@@ -15,6 +15,12 @@ use Rex::Commands::Service;
 use Rex::Commands::File;
 use Rex::Helper::Rexfile::ParamLookup;
 
+eval {
+  # For Rex > 1
+  use Rex::Commands::Template;
+  use Rex::Commands::Task;
+};
+
 task "setup", sub {
   my $ensure = param_lookup "ensure", "latest";
   my $conf_ensure = param_lookup "conf_ensure",
@@ -23,6 +29,9 @@ task "setup", sub {
   my $nginx_conf     = param_lookup "nginx_conf",     "/etc/nginx/nginx.conf";
   my $nginx_conf_template = param_lookup "nginx_conf_template",
     "templates/nginx/nginx.conf.tpl";
+  my $mime_type_conf = param_lookup "mime_type_conf", "/etc/nginx/mime.types";
+  my $mime_type_conf_template = param_lookup "mime_type_conf_template",
+    "templates/nginx/mime.types.tpl";
 
   my $user             = param_lookup "user",             "nginx";
   my $worker_processes = param_lookup "worker_processes", 1;
@@ -34,7 +43,7 @@ task "setup", sub {
   my $mime_type_file = param_lookup "mime_type_file", "/etc/nginx/mime.types";
   my $default_type = param_lookup "default_type", "application/octet-stream";
   my $log_format_main = param_lookup "log_format_main",
-'$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for"';
+    '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for"';
   my $access_log = param_lookup "access_log", "/var/log/nginx/access.log";
   my $sendfile   = param_lookup "sendfile",   "on";
   my $keepalive_timeout = param_lookup "keepalive_timeout", 65;
@@ -62,6 +71,18 @@ task "setup", sub {
     }
     };
 
+  file $mime_type_conf,
+    ensure    => $conf_ensure,
+    content   => template($mime_type_conf_template),
+    owner     => 'root',
+    group     => 'root',
+    mode      => '0644',
+    on_change => sub {
+    if ( $ensure ne "absent" ) {
+      service nginx => "reload";
+    }
+    };
+
   service "nginx", ensure => $service_ensure
     if ( $ensure ne "absent" );
 };
@@ -75,8 +96,7 @@ resource "vhost", sub {
 
   my $listen      = param_lookup "listen",      80;
   my $server_name = param_lookup "server_name", $name;
-  my $access_log  = param_lookup "access_log",
-    "/var/log/nginx/log/$name.access.log";
+  my $access_log = param_lookup "access_log", "/var/log/nginx/$name.access.log";
   my $access_log_format = param_lookup "access_log_format", "main";
   my $locations = param_lookup "locations",
     {

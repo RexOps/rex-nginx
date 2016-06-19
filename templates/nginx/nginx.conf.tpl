@@ -34,7 +34,7 @@ http {
     <%= $option %>;
 % }
 
-    sendfile        <%= $sendfile %>
+    sendfile        <%= $sendfile %>;
     keepalive_timeout  <%= $keepalive_timeout %>;
     gzip  <%= $gzip %>;
 

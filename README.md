@@ -15,6 +15,8 @@ Call this task to install nginx on your system.
 * service_ensure, Start service - Default: running
 * nginx_conf, Location of nginx.conf file - Default: /etc/nginx/nginx.conf
 * nginx_conf_template, Which template to use for nginx.conf - Default: templates/nginx/nginx.conf.tpl
+* mime_type_conf, Location of mime.types file - Default: /etc/nginx/mime.types
+* mime_type_conf_template, Which template to use for mime.types file. - Default: templates/nginx/mime.types.tpl
 * user - Default: nginx
 * worker_processes, How many worker processes - Default: 1
 * error_log_file, Where to log error messages - Default: /var/log/nginx/error.log
